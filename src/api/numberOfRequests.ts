@@ -3,8 +3,13 @@ import { API_CONFIG } from "../config.js";
 
 
 export function handlerNumberOfRequests(req: Request, res: Response) {
-  res.set("Content-Type", "text/plain; charset=utf-8");
-  res.send(`Hits: ${API_CONFIG.fileserverHits}`);
+  res.set("Content-Type", "text/html; charset=utf-8");
+  res.send(`<html>
+  <body>
+    <h1>Welcome, Chirpy Admin</h1>
+    <p>Chirpy has been visited ${API_CONFIG.fileserverHits} times!</p>
+  </body>
+</html>`);
 }
 
 export function handlerResetNumberOfRequests(req: Request, res: Response) {
