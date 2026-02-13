@@ -9,7 +9,7 @@ type ResponseError = {
 }
 
 type ResponseData = {
-  valid: true
+  cleanedBody: string
 };
 
 export function handlerValidateChirp(req: Request, res: Response) {
@@ -31,8 +31,11 @@ export function handlerValidateChirp(req: Request, res: Response) {
     return;
   }
 
+  let words = params.body.split(" ");
+  words = words.map((word) => ["kerfuffle", "sharbert", "fornax"].includes(word.toLocaleLowerCase()) ? "****" : word);
+
   const respBody: ResponseData = {
-      valid: true
+      cleanedBody: words.join(" ")
   };
   res.status(200).send(JSON.stringify(respBody));
 }
