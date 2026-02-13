@@ -27,8 +27,7 @@ export function handlerValidateChirp(req: Request, res: Response) {
     const respBody: ResponseError = {
       error: "Chirp is too long"
     };
-    res.status(400).send(JSON.stringify(respBody));
-    return;
+    throw new Error(JSON.stringify(respBody));
   }
 
   let words = params.body.split(" ");
