@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { API_CONFIG } from "../config.js";
+import { config } from "../config.js";
 
 
 export function handlerNumberOfRequests(req: Request, res: Response) {
@@ -7,13 +7,13 @@ export function handlerNumberOfRequests(req: Request, res: Response) {
   res.send(`<html>
   <body>
     <h1>Welcome, Chirpy Admin</h1>
-    <p>Chirpy has been visited ${API_CONFIG.fileserverHits} times!</p>
+    <p>Chirpy has been visited ${config.api.fileserverHits} times!</p>
   </body>
 </html>`);
 }
 
 export function handlerResetNumberOfRequests(req: Request, res: Response) {
-  API_CONFIG.fileserverHits = 0;
+  config.api.fileserverHits = 0;
   res.set("Content-Type", "text/plain; charset=utf-8");
   res.send("OK");
 }
