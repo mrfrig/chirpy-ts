@@ -2,8 +2,9 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import express from "express";
 import postgres from "postgres";
-import { handlerNumberOfRequests, handlerResetNumberOfRequests } from "./api/metrics.js";
+import { handlerMetrics, handlerReset } from "./api/admin.js";
 import { handlerReadiness } from "./api/healthz.js";
+import { handlerCreateNewUsers } from "./api/users.js";
 import { handlerValidateChirp } from "./api/validateChirp.js";
 import { config } from "./config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -21,11 +22,12 @@ app.use(middlewareLogResponses);
 
 app.use("/app",middlewareMetricsInc, express.static("./src/app"));
 
-app.get("/admin/metrics", handlerNumberOfRequests);
-app.post("/admin/reset", handlerResetNumberOfRequests);
+app.get("/admin/metrics", handlerMetrics);
+app.post("/admin/reset", handlerReset);
 
 app.get("/api/healthz", handlerReadiness);
 app.post("/api/validate_chirp", handlerValidateChirp);
+app.post("/api/users", handlerCreateNewUsers);
 
 app.use(errorHandler);
 

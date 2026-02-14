@@ -1,5 +1,9 @@
 import type { NextFunction, Request, Response } from "express";
 
+export type ResponseError = {
+  error: string
+}
+
 export class BadRequestError extends Error {
   constructor(message: string) {
     super(message);

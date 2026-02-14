@@ -1,12 +1,8 @@
 import type { Request, Response } from "express";
-import { BadRequestError } from "../middlewares/errorHandler.js";
+import { BadRequestError, ResponseError } from "../middlewares/errorHandler.js";
 
 type RequestData = {
   body: string
-}
-
-type ResponseError = {
-  error: string
 }
 
 type ResponseData = {
@@ -20,8 +16,7 @@ export function handlerValidateChirp(req: Request, res: Response) {
     const respBody: ResponseError = {
         error: "Invalid JSON"
     };
-    res.status(400).send(JSON.stringify(respBody));
-    return;
+     throw new BadRequestError(JSON.stringify(respBody));
   }
 
   if (params.body.length > 140) {
