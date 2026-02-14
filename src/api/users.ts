@@ -17,5 +17,5 @@ export async function handlerCreateNewUsers(req: Request, res: Response) {
   const {email}: RequestData = req.body;
   const result = await createUser({email});
   res.set("Content-Type", "application/json");
-  res.status(201).send(JSON.stringify(result));
+  res.status(201).send(result);
 }

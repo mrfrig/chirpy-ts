@@ -1,23 +1,18 @@
 import type { Request, Response } from "express";
+import { CreateChirp } from "../db/queries/chirps.js";
+import { NewChirp } from "../db/schema.js";
 import { BadRequestError, ResponseError } from "../middlewares/errorHandler.js";
 
-type RequestData = {
-  body: string
-}
 
-type ResponseData = {
-  cleanedBody: string
-};
-
-export function handlerValidateChirp(req: Request, res: Response) {
-  const params: RequestData = req.body;
-
-  if( !("body" in params)) {
+export async function handlerCreateChirp(req: Request, res: Response) {
+  if( !("body" in req.body && "userId" in req.body)) {
     const respBody: ResponseError = {
         error: "Invalid JSON"
     };
      throw new BadRequestError(JSON.stringify(respBody));
   }
+
+  const params: NewChirp = req.body;
 
   if (params.body.length > 140) {
     const respBody: ResponseError = {
@@ -28,9 +23,10 @@ export function handlerValidateChirp(req: Request, res: Response) {
 
   let words = params.body.split(" ");
   words = words.map((word) => ["kerfuffle", "sharbert", "fornax"].includes(word.toLocaleLowerCase()) ? "****" : word);
+  const cleanedBody = words.join(" ");
 
-  const respBody: ResponseData = {
-      cleanedBody: words.join(" ")
-  };
-  res.status(200).send(JSON.stringify(respBody));
+  const result = await CreateChirp({userId: params.userId, body: cleanedBody});
+
+  res.set("Content-Type", "application/json");
+  res.status(201).send(result);
 }

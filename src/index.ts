@@ -3,9 +3,9 @@ import { migrate } from "drizzle-orm/postgres-js/migrator";
 import express from "express";
 import postgres from "postgres";
 import { handlerMetrics, handlerReset } from "./api/admin.js";
+import { handlerCreateChirp } from "./api/chirps.js";
 import { handlerReadiness } from "./api/healthz.js";
 import { handlerCreateNewUsers } from "./api/users.js";
-import { handlerValidateChirp } from "./api/validateChirp.js";
 import { config } from "./config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { middlewareLogResponses } from "./middlewares/logResponses.js";
@@ -26,7 +26,7 @@ app.get("/admin/metrics", handlerMetrics);
 app.post("/admin/reset", handlerReset);
 
 app.get("/api/healthz", handlerReadiness);
-app.post("/api/validate_chirp", handlerValidateChirp);
+app.post("/api/chirps", handlerCreateChirp);
 app.post("/api/users", handlerCreateNewUsers);
 
 app.use(errorHandler);
