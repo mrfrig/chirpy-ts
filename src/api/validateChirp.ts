@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import { BadRequestError } from "../middlewares/errorHandler.js";
 
 type RequestData = {
   body: string
@@ -25,9 +26,9 @@ export function handlerValidateChirp(req: Request, res: Response) {
 
   if (params.body.length > 140) {
     const respBody: ResponseError = {
-      error: "Chirp is too long"
+      error: "Chirp is too long. Max length is 140"
     };
-    throw new Error(JSON.stringify(respBody));
+    throw new BadRequestError(JSON.stringify(respBody));
   }
 
   let words = params.body.split(" ");
