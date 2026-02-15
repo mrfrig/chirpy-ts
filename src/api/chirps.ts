@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { CreateChirp } from "../db/queries/chirps.js";
+import { createChirp, getChirps } from "../db/queries/chirps.js";
 import { NewChirp } from "../db/schema.js";
 import { BadRequestError, ResponseError } from "../middlewares/errorHandler.js";
 
@@ -25,8 +25,15 @@ export async function handlerCreateChirp(req: Request, res: Response) {
   words = words.map((word) => ["kerfuffle", "sharbert", "fornax"].includes(word.toLocaleLowerCase()) ? "****" : word);
   const cleanedBody = words.join(" ");
 
-  const result = await CreateChirp({userId: params.userId, body: cleanedBody});
+  const result = await createChirp({userId: params.userId, body: cleanedBody});
 
   res.set("Content-Type", "application/json");
   res.status(201).send(result);
+}
+
+export async function handlerGetChirps(req: Request, res: Response) {
+  const chirps = await getChirps();
+
+  res.set("Content-Type", "application/json");
+  res.status(200).send(chirps);
 }
