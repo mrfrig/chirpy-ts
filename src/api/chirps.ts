@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { createChirp, getChirps } from "../db/queries/chirps.js";
+import { createChirp, getChirp, getChirps } from "../db/queries/chirps.js";
 import { NewChirp } from "../db/schema.js";
-import { BadRequestError, ResponseError } from "../middlewares/errorHandler.js";
+import { BadRequestError, NotFoundError, ResponseError } from "../middlewares/errorHandler.js";
 
 
 export async function handlerCreateChirp(req: Request, res: Response) {
@@ -36,4 +36,25 @@ export async function handlerGetChirps(req: Request, res: Response) {
 
   res.set("Content-Type", "application/json");
   res.status(200).send(chirps);
+}
+
+export async function handlerGetChirp(req: Request, res: Response) {
+  if (typeof req.params["chirpId"] !== "string") {
+    const respBody: ResponseError = {
+        error: "Invalid param"
+    };
+     throw new BadRequestError(JSON.stringify(respBody));
+  }
+  const chirpId = req.params["chirpId"];
+  const chirp = await getChirp(chirpId);
+
+  if (!chirp) {
+    const respBody: ResponseError = {
+        error: "Chirp not found"
+    };
+     throw new NotFoundError(JSON.stringify(respBody));
+  }
+
+  res.set("Content-Type", "application/json");
+  res.status(200).send(chirp);
 }

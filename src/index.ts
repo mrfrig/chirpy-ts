@@ -3,7 +3,7 @@ import { migrate } from "drizzle-orm/postgres-js/migrator";
 import express from "express";
 import postgres from "postgres";
 import { handlerMetrics, handlerReset } from "./api/admin.js";
-import { handlerCreateChirp, handlerGetChirps } from "./api/chirps.js";
+import { handlerCreateChirp, handlerGetChirp, handlerGetChirps } from "./api/chirps.js";
 import { handlerReadiness } from "./api/healthz.js";
 import { handlerCreateNewUsers } from "./api/users.js";
 import { config } from "./config.js";
@@ -28,6 +28,7 @@ app.post("/admin/reset", handlerReset);
 app.get("/api/healthz", handlerReadiness);
 app.post("/api/chirps", handlerCreateChirp);
 app.get("/api/chirps", handlerGetChirps);
+app.get("/api/chirps/:chirpId", handlerGetChirp);
 app.post("/api/users", handlerCreateNewUsers);
 
 app.use(errorHandler);
