@@ -5,7 +5,7 @@ import postgres from "postgres";
 import { handlerMetrics, handlerReset } from "./api/admin.js";
 import { handlerCreateChirp, handlerGetChirp, handlerGetChirps } from "./api/chirps.js";
 import { handlerReadiness } from "./api/healthz.js";
-import { handlerCreateNewUsers } from "./api/users.js";
+import { handlerCreateNewUsers, handlerLogin } from "./api/users.js";
 import { config } from "./config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { middlewareLogResponses } from "./middlewares/logResponses.js";
@@ -29,6 +29,7 @@ app.get("/api/healthz", handlerReadiness);
 app.post("/api/chirps", handlerCreateChirp);
 app.get("/api/chirps", handlerGetChirps);
 app.get("/api/chirps/:chirpId", handlerGetChirp);
+app.post("/api/login", handlerLogin);
 app.post("/api/users", handlerCreateNewUsers);
 
 app.use(errorHandler);

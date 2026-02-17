@@ -15,6 +15,13 @@
       "when": 1771111550755,
       "tag": "0001_bouncy_tyrannus",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771249067620,
+      "tag": "0002_wise_bloodstrike",
+      "breakpoints": true
     }
   ]
 }
