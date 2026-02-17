@@ -1,48 +1,34 @@
 import type { NextFunction, Request, Response } from "express";
+import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError } from "../api/errors.js";
+import { respondWithError } from "../api/json.js";
 
-export type ResponseError = {
-  error: string
-}
 
-export class BadRequestError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
-export class UnauthorizedError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
-export class ForbiddenError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
-export class NotFoundError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
-export function errorHandler(
+export function errorMiddleware(
   err: Error,
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
-   if (err instanceof BadRequestError){
-    res.status(400).send(err.message);
-  } else if (err instanceof UnauthorizedError){
-    res.status(401).send(err.message);
-  } else if (err instanceof ForbiddenError){
-    res.status(403).send(err.message);
+  let statusCode = 500;
+  let message = "Something went wrong on our end";
+
+  if (err instanceof BadRequestError) {
+    statusCode = 400;
+    message = err.message;
+  } else if (err instanceof UnauthorizedError) {
+    statusCode = 401;
+    message = err.message;
+  } else if (err instanceof ForbiddenError) {
+    statusCode = 403;
+    message = err.message;
   } else if (err instanceof NotFoundError) {
-    res.status(404).send(err.message);
-  } else {
-    res.status(500).send("Internal Server Error");
+    statusCode = 404;
+    message = err.message;
   }
+
+  if (statusCode >= 500) {
+    console.log(err.message);
+  }
+
+  respondWithError(res, statusCode, err.message);
 }

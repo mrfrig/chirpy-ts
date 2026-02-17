@@ -1,18 +1,23 @@
 import type { Request, Response } from "express";
+import { config } from "../config.js";
 import { createChirp, getChirp, getChirps } from "../db/queries/chirps.js";
 import { NewChirp } from "../db/schema.js";
-import { BadRequestError, NotFoundError, ResponseError } from "../middlewares/errorHandler.js";
+import { getBearerToken, validateJWT } from "../utils/auth.js";
+import { BadRequestError, NotFoundError, ResponseError } from "./errors.js";
+import { respondWithJSON } from "./json.js";
 
 
 export async function handlerCreateChirp(req: Request, res: Response) {
-  if( !("body" in req.body && "userId" in req.body)) {
+  if( !("body" in req.body)) {
     const respBody: ResponseError = {
         error: "Invalid JSON"
     };
      throw new BadRequestError(JSON.stringify(respBody));
   }
 
-  const params: NewChirp = req.body;
+  const token = getBearerToken(req);
+  const userId = validateJWT(token, config.api.secret);
+  const params: NewChirp = {body: req.body.body, userId};
 
   if (params.body.length > 140) {
     const respBody: ResponseError = {
@@ -27,15 +32,13 @@ export async function handlerCreateChirp(req: Request, res: Response) {
 
   const result = await createChirp({userId: params.userId, body: cleanedBody});
 
-  res.set("Content-Type", "application/json");
-  res.status(201).send(result);
+  respondWithJSON(res, 201, result);
 }
 
 export async function handlerGetChirps(req: Request, res: Response) {
   const chirps = await getChirps();
 
-  res.set("Content-Type", "application/json");
-  res.status(200).send(chirps);
+  respondWithJSON(res, 200, chirps);
 }
 
 export async function handlerGetChirp(req: Request, res: Response) {
@@ -55,6 +58,5 @@ export async function handlerGetChirp(req: Request, res: Response) {
      throw new NotFoundError(JSON.stringify(respBody));
   }
 
-  res.set("Content-Type", "application/json");
-  res.status(200).send(chirp);
+  respondWithJSON(res, 200, chirp);
 }

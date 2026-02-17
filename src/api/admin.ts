@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { config } from "../config.js";
 import { resetChirps } from "../db/queries/chirps.js";
 import { resetUsers } from "../db/queries/users.js";
-import { ForbiddenError, ResponseError } from "../middlewares/errorHandler.js";
+import { ForbiddenError, ResponseError } from "./errors.js";
 
 
 export function handlerMetrics(req: Request, res: Response) {

@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 
-export function middlewareLogResponses(req: Request, res: Response, next: NextFunction) {
+export function logResponsesMiddleware(req: Request, res: Response, next: NextFunction) {
   res.on("finish", () => {
     const status = res.statusCode;
     if (status < 200 || status > 299) {

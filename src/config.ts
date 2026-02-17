@@ -10,6 +10,7 @@ type DBConfig = {
 type APIConfig = {
   platform: string;
   fileserverHits: number;
+  secret: string;
 };
 
 const migrationConfig: MigrationConfig = {
@@ -17,7 +18,7 @@ const migrationConfig: MigrationConfig = {
 };
 
 export const config: {api: APIConfig, db: DBConfig} = {
-  api: {fileserverHits: 0, platform: envOrThrow("PLATFORM")},
+  api: {fileserverHits: 0, platform: envOrThrow("PLATFORM"), secret: envOrThrow("SECRET"),},
   db: {url: envOrThrow("DB_URL"), migrationConfig,}
 };
 

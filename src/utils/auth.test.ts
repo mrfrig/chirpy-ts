@@ -1,6 +1,7 @@
+import type { Request } from "express";
+import { UnauthorizedError } from "../api/errors";
 import { beforeAll, describe, expect, it } from "vitest";
-import { UnauthorizedError } from "../middlewares/errorHandler";
-import { checkPasswordHash, hashPassword, makeJWT, validateJWT } from "./auth";
+import { checkPasswordHash, getBearerToken, hashPassword, makeJWT, validateJWT } from "./auth";
 
 describe("Password Hashing", () => {
   const password1 = "correctPassword123!";
@@ -69,4 +70,20 @@ describe("JWT Token", () => {
     expect(() => validateJWT(validToken, wrongSecret)).toThrow(UnauthorizedError);
   });
 
+});
+
+describe("Bearer Token", () => {
+  it("should get bearer token", async () => {
+    const token = "this.is.a.token";
+    const result = getBearerToken({
+      get: () => `Bearer ${token}`,
+    } as unknown as Request);
+    expect(result).toBe(token);
+  });
+
+  it("should throw error on authorization missing", async () => {
+    expect(() => getBearerToken({
+      get: () => undefined,
+    } as unknown as Request)).toThrow(UnauthorizedError);
+  });
 });
