@@ -29,6 +29,13 @@
       "when": 1771423328563,
       "tag": "0003_useful_shadow_king",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1771507079338,
+      "tag": "0004_futuristic_goliath",
+      "breakpoints": true
     }
   ]
 }

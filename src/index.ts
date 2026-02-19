@@ -7,6 +7,7 @@ import { loginHandler, refreshHandler, revokeHandler } from "./api/auth.js";
 import { handlerCreateChirp, handlerDeleteChirp, handlerGetChirp, handlerGetChirps } from "./api/chirps.js";
 import { handlerReadiness } from "./api/healthz.js";
 import { createNewUsersHandler, updateUserHandler } from "./api/users.js";
+import { polkaWebhookHandler } from "./api/webhooks.js";
 import { config } from "./config.js";
 import { errorMiddleware } from "./middlewares/errorHandler.js";
 import { logResponsesMiddleware } from "./middlewares/logResponses.js";
@@ -36,6 +37,8 @@ app.post("/api/refresh", refreshHandler);
 app.post("/api/revoke", revokeHandler);
 app.post("/api/users", createNewUsersHandler);
 app.put("/api/users", updateUserHandler);
+
+app.post("/api/polka/webhooks", polkaWebhookHandler);
 
 app.use(errorMiddleware);
 
