@@ -12,6 +12,15 @@ export async function createUser(email: string, password: string): Promise<NewUs
   return result;
 }
 
+export async function getUser(userId: string): Promise<User | undefined> {
+  const results = await db.select().from(users).where(eq(users.id, userId));
+
+  if (results.length === 0) {
+    return undefined;
+  }
+  return results[0];
+}
+
 export async function getUserByEmail(email: string): Promise<User | undefined> {
   const results = await db.select().from(users).where(eq(users.email, email));
 

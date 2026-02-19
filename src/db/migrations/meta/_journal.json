@@ -22,6 +22,13 @@
       "when": 1771249067620,
       "tag": "0002_wise_bloodstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771423328563,
+      "tag": "0003_useful_shadow_king",
+      "breakpoints": true
     }
   ]
 }

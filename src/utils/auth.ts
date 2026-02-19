@@ -2,6 +2,7 @@ import * as argon2 from "argon2";
 import type { Request } from "express";
 import type { JwtPayload } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
+import { randomBytes } from "node:crypto";
 import { UnauthorizedError } from "../api/errors.js";
 
 const TOKEN_ISSUER = "chirpy";
@@ -64,4 +65,8 @@ export function getBearerToken(req: Request): string {
   }
 
   return authorization.replaceAll("Bearer", "").replaceAll(" ", "");
+}
+
+export function makeRefreshToken() {
+  return randomBytes(256).toString('hex');
 }

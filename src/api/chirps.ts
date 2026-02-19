@@ -9,10 +9,7 @@ import { respondWithJSON } from "./json.js";
 
 export async function handlerCreateChirp(req: Request, res: Response) {
   if( !("body" in req.body)) {
-    const respBody: ResponseError = {
-        error: "Invalid JSON"
-    };
-     throw new BadRequestError(JSON.stringify(respBody));
+     throw new BadRequestError("Invalid JSON");
   }
 
   const token = getBearerToken(req);
@@ -20,10 +17,7 @@ export async function handlerCreateChirp(req: Request, res: Response) {
   const params: NewChirp = {body: req.body.body, userId};
 
   if (params.body.length > 140) {
-    const respBody: ResponseError = {
-      error: "Chirp is too long. Max length is 140"
-    };
-    throw new BadRequestError(JSON.stringify(respBody));
+    throw new BadRequestError("Chirp is too long. Max length is 140");
   }
 
   let words = params.body.split(" ");
@@ -43,19 +37,13 @@ export async function handlerGetChirps(req: Request, res: Response) {
 
 export async function handlerGetChirp(req: Request, res: Response) {
   if (typeof req.params["chirpId"] !== "string") {
-    const respBody: ResponseError = {
-        error: "Invalid param"
-    };
-     throw new BadRequestError(JSON.stringify(respBody));
+     throw new BadRequestError("Invalid param");
   }
   const chirpId = req.params["chirpId"];
   const chirp = await getChirp(chirpId);
 
   if (!chirp) {
-    const respBody: ResponseError = {
-        error: "Chirp not found"
-    };
-     throw new NotFoundError(JSON.stringify(respBody));
+     throw new NotFoundError("Chirp not found");
   }
 
   respondWithJSON(res, 200, chirp);
