@@ -30,6 +30,15 @@ export async function getUserByEmail(email: string): Promise<User | undefined> {
   return results[0];
 }
 
+export async function updateUser(userId:string, email: string, password: string): Promise<User> {
+  const [result] = await db
+    .update(users)
+    .set({email, hashedPassword: await hashPassword(password)})
+    .where(eq(users.id, userId))
+    .returning();
+  return result;
+}
+
 export async function resetUsers() {
   await db.delete(users);
 }

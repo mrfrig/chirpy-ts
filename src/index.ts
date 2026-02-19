@@ -6,7 +6,7 @@ import { handlerMetrics, handlerReset } from "./api/admin.js";
 import { loginHandler, refreshHandler, revokeHandler } from "./api/auth.js";
 import { handlerCreateChirp, handlerGetChirp, handlerGetChirps } from "./api/chirps.js";
 import { handlerReadiness } from "./api/healthz.js";
-import { createNewUsersHandler } from "./api/users.js";
+import { createNewUsersHandler, updateUserHandler } from "./api/users.js";
 import { config } from "./config.js";
 import { errorMiddleware } from "./middlewares/errorHandler.js";
 import { logResponsesMiddleware } from "./middlewares/logResponses.js";
@@ -34,6 +34,7 @@ app.post("/api/login", loginHandler);
 app.post("/api/refresh", refreshHandler);
 app.post("/api/revoke", revokeHandler);
 app.post("/api/users", createNewUsersHandler);
+app.put("/api/users", updateUserHandler);
 
 app.use(errorMiddleware);
 
