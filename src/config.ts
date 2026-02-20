@@ -11,6 +11,7 @@ type APIConfig = {
   platform: string;
   fileserverHits: number;
   secret: string;
+  polkaKey: string;
 };
 
 const migrationConfig: MigrationConfig = {
@@ -18,8 +19,16 @@ const migrationConfig: MigrationConfig = {
 };
 
 export const config: {api: APIConfig, db: DBConfig} = {
-  api: {fileserverHits: 0, platform: envOrThrow("PLATFORM"), secret: envOrThrow("SECRET"),},
-  db: {url: envOrThrow("DB_URL"), migrationConfig,}
+  api: {
+    fileserverHits: 0, 
+    platform: envOrThrow("PLATFORM"), 
+    secret: envOrThrow("SECRET"), 
+    polkaKey: envOrThrow("POLKA_KEY"),
+  },
+  db: {
+    url: envOrThrow("DB_URL"), 
+    migrationConfig,
+  }
 };
 
 function envOrThrow(key: string) {
